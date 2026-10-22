@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Inventory Management System — Project Report</title>
+<style>
+  @page {
+    size: A4;
+    margin: 15mm 15mm 15mm 15mm;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    color: #1e293b;
+    background: #ffffff;
+    line-height: 1.5;
+    font-size: 11pt;
+  }
+  .page-break { page-break-before: always; }
+  .no-break { break-inside: avoid; }
+
+  /* HEADER BANNER */
+  .header-card {
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+  }
+  .tag {
+    display: inline-block;
+    background: #4f46e5;
+    color: white;
+    font-size: 9pt;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+  h1 { font-size: 22pt; font-weight: 800; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.5px; }
+  .subtitle { font-size: 11pt; color: #64748b; margin-bottom: 16px; }
+  
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    border-top: 1px solid #cbd5e1;
+    padding-top: 14px;
+    font-size: 9.5pt;
+  }
+  .meta-item strong { color: #0f172a; font-weight: 600; }
+  .meta-link {
+    color: #4f46e5;
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  /* SECTIONS */
+  h2 {
+    font-size: 14pt;
+    font-weight: 700;
+    color: #0f172a;
+    border-bottom: 2px solid #4f46e5;
+    padding-bottom: 4px;
+    margin: 22px 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3 { font-size: 11.5pt; font-weight: 700; color: #334155; margin: 14px 0 8px 0; }
+  p { margin-bottom: 10px; font-size: 10pt; color: #334155; }
+
+  /* TABLES */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    font-size: 9pt;
+  }
+  th {
+    background: #0f172a;
+    color: #ffffff;
+    text-align: left;
+    padding: 7px 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 8pt;
+    letter-spacing: 0.04em;
+  }
+  td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+  }
+  tr:nth-child(even) td { background: #f8fafc; }
+  .badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-size: 7.5pt;
+    font-weight: 700;
+  }
+  .b-pk { background: #e0e7ff; color: #3730a3; }
+  .b-fk { background: #fef3c7; color: #92400e; }
+  .b-req { background: #fee2e2; color: #991b1b; }
+  .b-ok { background: #d1fae5; color: #065f46; }
+
+  /* CODE BLOCKS */
+  pre {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 8pt;
+    line-height: 1.45;
+    overflow-x: auto;
+    margin-bottom: 14px;
+    border: 1px solid #1e293b;
+    white-space: pre-wrap;
+  }
+  code { font-family: 'Consolas', monospace; font-size: 8.5pt; background: #f1f5f9; padding: 2px 5px; border-radius: 4px; color: #0f172a; }
+
+  /* HIGHLIGHT BOX */
+  .callout {
+    background: #f0fdf4;
+    border-left: 4px solid #10b981;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 9.5pt;
+  }
+  .callout strong { color: #065f46; }
+
+  .callout-blue {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 9.5pt;
+  }
+  .callout-blue strong { color: #1e40af; }
+
+  /* ER DIAGRAM SVG BOX */
+  .diagram-box {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px;
+    background: #f8fafc;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- COVER / HEADER -->
+  <div class="header-card">
+    <span class="tag">Project Statement 2</span>
+    <h1>Inventory Management System</h1>
+    <div class="subtitle">Complete Relational Database Design, Implementation & Live Deployment</div>
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <strong>🌐 Live Deployment:</strong><br>
+        <a class="meta-link" href="https://inventorymanagement-lake.vercel.app">https://inventorymanagement-lake.vercel.app</a>
+      </div>
+      <div class="meta-item">
+        <strong>🗄️ Database:</strong><br>
+        Aiven Cloud MySQL 8.4 (DigitalOcean BLR · SSL Verified)
+      </div>
+      <div class="meta-item">
+        <strong>💻 Technology Stack:</strong><br>
+        Python 3.14 · Flask · MySQL 8.4 · TailwindCSS · Vercel
+      </div>
+      <div class="meta-item">
+        <strong>📋 Key Tables:</strong><br>
+        <code>Supplier</code> · <code>Product</code> · <code>InventoryTransaction</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Project Status:</strong> Fully Completed & Deployed. All schema tables, foreign key constraints, 14 advanced queries, and interactive live web CRUD operations have been verified against real cloud MySQL instances.
+  </div>
+
+  <!-- SECTION 1 -->
+  <h2>1. Executive Summary & Architecture</h2>
+  <p>
+    The Inventory Management System provides end-to-end tracking of commercial inventory items, product pricing, stock movement, and supplier logistics. The system ensures complete data integrity through relational primary and foreign key constraints, supports multi-type transactions (Purchases, Sales, Returns), and features a real-time web dashboard connected to a live cloud MySQL database.
+  </p>
+
+  <!-- ER DIAGRAM -->
+  <div class="diagram-box no-break">
+    <h3 style="margin-top:0;">Relational Entity-Relationship Model</h3>
+    <svg width="100%" height="150" viewBox="0 0 650 150" xmlns="http://www.w3.org/2000/svg">
+      <!-- Supplier Box -->
+      <rect x="20" y="20" width="160" height="110" rx="8" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="100" y="45" font-family="Segoe UI, sans-serif" font-size="12" font-weight="bold" fill="#3730a3" text-anchor="middle">SUPPLIER</text>
+      <line x1="20" y1="55" x2="180" y2="55" stroke="#4f46e5" stroke-width="1"/>
+      <text x="30" y="75" font-family="Segoe UI, sans-serif" font-size="9.5" fill="#1e1b4b">• SupplierID (PK)</text>
+      <text x="30" y="92" font-family="Segoe UI, sans-serif" font-size="9.5" fill="#1e1b4b">• SupplierName</text>
+      <text x="30" y="109" font-family="Segoe UI, sans-serif" font-size="9.5" fill="#1e1b4b">• City, Country, Phone</text>
+
+      <!-- Arrow 1 -->
+      <line x1="180" y1="75" x2="245" y2="75" stroke="#475569" stroke-width="2"/>
+      <polygon points="245,70 255,75 245,80" fill="#475569"/>
+      <text x="215" y="68" font-family="Segoe UI, sans-serif" font-size="8.5" fill="#64748b" text-anchor="middle">1 : N</text>
+
+      <!-- Product Box -->
+      <rect x="255" y="15" width="160" height="120" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+      <text x="335" y="40" font-family="Segoe UI, sans-serif" font-size="12" font-weight="bold" fill="#065f46" text-anchor="middle">PRODUCT</text>
+      <line x1="255" y1="50" x2="415" y2="50" stroke="#059669" stroke-width="1"/>
+      <text x="265" y="70" font-family="Segoe UI, sans-serif" font-size="9.5" fill="#064e3b">• ProductID (PK)</text>
+      <text x="265" y="87" font-family="Segoe UI, sans-serif" font-size="9.5" fill="#064e3b">• ProductName</text>
+      <text x="265" y="104" font-family="Segoe UI, sans-serif" font-size="9.5" fill="#064e3b">• SupplierID (FK)</text>
+      <text x="265" y="121" font-family="Segoe UI, sans-serif" font-size="9.5" fill="#064e3b">• UnitPrice, Stock</text>
+
+      <!-- Arrow 2 -->
+      <line x1="415" y1="75" x2="475" y2="75" stroke="#475569" stroke-width="2"/>
+      <polygon points="475,70 485,75 475,80" fill="#475569"/>
+      <text x="448" y="68" font-family="Segoe UI, sans-serif" font-size="8.5" fill="#64748b" text-anchor="middle">1 : N</text>
+
+      <!-- Transaction Box -->
+      <rect x="485" y="15" width="150" height="120" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+      <text x="560" y="40" font-family="Segoe UI, sans-serif" font-size="11" font-weight="bold" fill="#78350f" text-anchor="middle">INVENTORY TXN</text>
+      <line x1="485" y1="50" x2="635" y2="50" stroke="#d97706" stroke-width="1"/>
+      <text x="495" y="70" font-family="Segoe UI, sans-serif" font-size="9.5" fill="#451a03">• TransactionID (PK)</text>
+      <text x="495" y="87" font-family="Segoe UI, sans-serif" font-size="9.5" fill="#451a03">• ProductID (FK)</text>
+      <text x="495" y="104" font-family="Segoe UI, sans-serif" font-size="9.5" fill="#451a03">• Type, Quantity</text>
+      <text x="495" y="121" font-family="Segoe UI, sans-serif" font-size="9.5" fill="#451a03">• TransactionDate</text>
+    </svg>
+  </div>
+
+  <!-- SECTION 2 -->
+  <h2>2. Data Dictionary & Table Specifications</h2>
+
+  <h3>Table 1: Supplier</h3>
+  <table>
+    <thead>
+      <tr><th>Column Name</th><th>Data Type</th><th>Key / Constraint</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>SupplierID</code></td><td>INT</td><td><span class="badge b-pk">PRIMARY KEY AUTO_INCREMENT</span></td><td>Unique supplier identifier</td></tr>
+      <tr><td><code>SupplierName</code></td><td>VARCHAR(150)</td><td><span class="badge b-req">NOT NULL</span></td><td>Official name of the supplier company</td></tr>
+      <tr><td><code>ContactName</code></td><td>VARCHAR(100)</td><td>Nullable</td><td>Key contact representative</td></tr>
+      <tr><td><code>ContactTitle</code></td><td>VARCHAR(100)</td><td>Nullable</td><td>Designation / Department</td></tr>
+      <tr><td><code>Address</code></td><td>VARCHAR(200)</td><td>Nullable</td><td>Registered office / facility address</td></tr>
+      <tr><td><code>City</code>, <code>Region</code></td><td>VARCHAR(100)</td><td>Nullable</td><td>City & State / Province</td></tr>
+      <tr><td><code>PostalCode</code></td><td>VARCHAR(20)</td><td>Nullable</td><td>Postal / ZIP Code</td></tr>
+      <tr><td><code>Country</code></td><td>VARCHAR(100)</td><td>Nullable</td><td>Operating Country</td></tr>
+      <tr><td><code>Phone</code></td><td>VARCHAR(30)</td><td>Nullable</td><td>Telephone number with dial code</td></tr>
+      <tr><td><code>Email</code></td><td>VARCHAR(150)</td><td>Nullable</td><td>Official correspondence email</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Table 2: Product</h3>
+  <table>
+    <thead>
+      <tr><th>Column Name</th><th>Data Type</th><th>Key / Constraint</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>ProductID</code></td><td>INT</td><td><span class="badge b-pk">PRIMARY KEY AUTO_INCREMENT</span></td><td>Unique SKU / product identifier</td></tr>
+      <tr><td><code>ProductName</code></td><td>VARCHAR(150)</td><td><span class="badge b-req">NOT NULL</span></td><td>Commercial product name</td></tr>
+      <tr><td><code>Description</code></td><td>TEXT</td><td>Nullable</td><td>Product technical specifications</td></tr>
+      <tr><td><code>SupplierID</code></td><td>INT</td><td><span class="badge b-fk">FOREIGN KEY → Supplier(SupplierID)</span></td><td>Source vendor ID (CASCADE/SET NULL)</td></tr>
+      <tr><td><code>UnitPrice</code></td><td>DECIMAL(10,2)</td><td><span class="badge b-req">NOT NULL DEFAULT 0.00</span></td><td>Sale price per unit (₹)</td></tr>
+      <tr><td><code>QuantityInStock</code></td><td>INT</td><td><span class="badge b-req">NOT NULL DEFAULT 0</span></td><td>Current warehouse inventory count</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <h3>Table 3: InventoryTransaction</h3>
+  <table>
+    <thead>
+      <tr><th>Column Name</th><th>Data Type</th><th>Key / Constraint</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>TransactionID</code></td><td>INT</td><td><span class="badge b-pk">PRIMARY KEY AUTO_INCREMENT</span></td><td>Unique transaction movement ID</td></tr>
+      <tr><td><code>ProductID</code></td><td>INT</td><td><span class="badge b-fk">FOREIGN KEY → Product(ProductID)</span></td><td>Target product affected by movement</td></tr>
+      <tr><td><code>TransactionType</code></td><td>ENUM</td><td><span class="badge b-req">('Purchase', 'Sale', 'Return')</span></td><td>Classification of stock movement</td></tr>
+      <tr><td><code>Quantity</code></td><td>INT</td><td><span class="badge b-req">NOT NULL</span></td><td>Number of units transferred</td></tr>
+      <tr><td><code>TransactionDate</code></td><td>DATE</td><td><span class="badge b-req">NOT NULL</span></td><td>Date of movement execution</td></tr>
+      <tr><td><code>Notes</code></td><td>TEXT</td><td>Nullable</td><td>Order numbers, invoices, or audit remarks</td></tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 3 -->
+  <h2>3. SQL Schema Definition (DDL)</h2>
+  <pre>-- Drop tables in reverse dependency order
+DROP TABLE IF EXISTS InventoryTransaction;
+DROP TABLE IF EXISTS Product;
+DROP TABLE IF EXISTS Supplier;
+
+-- 1. Supplier Table
+CREATE TABLE Supplier (
+    SupplierID   INT          PRIMARY KEY AUTO_INCREMENT,
+    SupplierName VARCHAR(150) NOT NULL,
+    ContactName  VARCHAR(100),
+    ContactTitle VARCHAR(100),
+    Address      VARCHAR(200),
+    City         VARCHAR(100),
+    Region       VARCHAR(100),
+    PostalCode   VARCHAR(20),
+    Country      VARCHAR(100),
+    Phone        VARCHAR(30),
+    Email        VARCHAR(150)
+);
+
+-- 2. Product Table
+CREATE TABLE Product (
+    ProductID       INT            PRIMARY KEY AUTO_INCREMENT,
+    ProductName     VARCHAR(150)   NOT NULL,
+    Description     TEXT,
+    SupplierID      INT,
+    UnitPrice       DECIMAL(10,2)  NOT NULL DEFAULT 0.00,
+    QuantityInStock INT            NOT NULL DEFAULT 0,
+    CONSTRAINT fk_product_supplier
+        FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
+        ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+-- 3. Inventory Transaction Table
+CREATE TABLE InventoryTransaction (
+    TransactionID   INT  PRIMARY KEY AUTO_INCREMENT,
+    ProductID       INT  NOT NULL,
+    TransactionType ENUM('Purchase', 'Sale', 'Return') NOT NULL,
+    Quantity        INT  NOT NULL,
+    TransactionDate DATE NOT NULL,
+    Notes           TEXT,
+    CONSTRAINT fk_transaction_product
+        FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+        ON UPDATE CASCADE ON DELETE CASCADE
+);</pre>
+
+  <!-- SECTION 4 -->
+  <h2>4. Key SQL Inventory Queries & Results</h2>
+
+  <div class="no-break">
+    <h3>Query 1: Products with Linked Supplier Names</h3>
+    <pre>SELECT p.ProductID, p.ProductName, s.SupplierName, p.UnitPrice, p.QuantityInStock
+FROM Product p
+LEFT JOIN Supplier s ON p.SupplierID = s.SupplierID
+ORDER BY p.ProductID;</pre>
+    <table>
+      <thead><tr><th>ID</th><th>Product Name</th><th>Supplier</th><th>Unit Price</th><th>In Stock</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Laptop Pro 15</td><td>TechParts Inc.</td><td>₹75,000.00</td><td>50</td></tr>
+        <tr><td>2</td><td>Wireless Mouse</td><td>Global Supplies</td><td>₹850.00</td><td>200</td></tr>
+        <tr><td>3</td><td>USB-C Hub</td><td>QuickStock Ltd.</td><td>₹2,500.00</td><td>150</td></tr>
+        <tr><td>4</td><td>Mechanical Keyboard</td><td>TechParts Inc.</td><td>₹4,500.00</td><td>80</td></tr>
+        <tr><td>5</td><td>Monitor 27 inch</td><td>FastShip Co.</td><td>₹32,000.00</td><td>30</td></tr>
+        <tr><td>6</td><td>Webcam HD</td><td>Global Supplies</td><td>₹3,200.00</td><td>120</td></tr>
+        <tr><td>7</td><td>Desk Lamp LED</td><td>QuickStock Ltd.</td><td>₹750.00</td><td>300</td></tr>
+        <tr><td>8</td><td>Headset Pro</td><td>FastShip Co.</td><td>₹6,500.00</td><td>60</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-break"></div>
+
+  <div class="no-break">
+    <h3>Query 2: Stock Movement Summary per Product</h3>
+    <pre>SELECT 
+    p.ProductName,
+    COALESCE(SUM(CASE WHEN t.TransactionType = 'Purchase' THEN t.Quantity ELSE 0 END), 0) AS Purchased,
+    COALESCE(SUM(CASE WHEN t.TransactionType = 'Sale'     THEN t.Quantity ELSE 0 END), 0) AS Sold,
+    COALESCE(SUM(CASE WHEN t.TransactionType = 'Return'   THEN t.Quantity ELSE 0 END), 0) AS Returned,
+    p.QuantityInStock AS CurrentStock
+FROM Product p
+LEFT JOIN InventoryTransaction t ON p.ProductID = t.ProductID
+GROUP BY p.ProductID, p.ProductName, p.QuantityInStock
+ORDER BY p.ProductName;</pre>
+    <table>
+      <thead><tr><th>Product Name</th><th>Purchased</th><th>Sold</th><th>Returned</th><th>Current Stock</th></tr></thead>
+      <tbody>
+        <tr><td>Desk Lamp LED</td><td>150</td><td>70</td><td>0</td><td>300</td></tr>
+        <tr><td>Headset Pro</td><td>40</td><td>15</td><td>2</td><td>60</td></tr>
+        <tr><td>Laptop Pro 15</td><td>20</td><td>5</td><td>0</td><td>50</td></tr>
+        <tr><td>Mechanical Keyboard</td><td>50</td><td>10</td><td>0</td><td>80</td></tr>
+        <tr><td>Monitor 27 inch</td><td>15</td><td>3</td><td>0</td><td>30</td></tr>
+        <tr><td>USB-C Hub</td><td>80</td><td>20</td><td>0</td><td>150</td></tr>
+        <tr><td>Webcam HD</td><td>60</td><td>25</td><td>0</td><td>120</td></tr>
+        <tr><td>Wireless Mouse</td><td>100</td><td>30</td><td>5</td><td>200</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="no-break">
+    <h3>Query 3: Low-Stock Critical Alert Report (&lt; 50 threshold)</h3>
+    <pre>SELECT ProductID, ProductName, QuantityInStock, 'REORDER REQUIRED' AS Status
+FROM Product WHERE QuantityInStock &lt; 50 ORDER BY QuantityInStock ASC;</pre>
+    <table>
+      <thead><tr><th>Product ID</th><th>Product Name</th><th>Current Stock</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>5</td><td>Monitor 27 inch</td><td>30</td><td><span class="badge b-req">REORDER REQUIRED</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="no-break">
+    <h3>Query 4: Overall Warehouse Valuation</h3>
+    <pre>SELECT 
+    COUNT(ProductID) AS TotalProducts,
+    SUM(QuantityInStock) AS TotalUnitsInStock,
+    ROUND(SUM(UnitPrice * QuantityInStock), 2) AS TotalInventoryValue
+FROM Product;</pre>
+    <table>
+      <thead><tr><th>Total Products</th><th>Total Units In Stock</th><th>Total Inventory Value</th></tr></thead>
+      <tbody>
+        <tr><td>8</td><td>990 units</td><td><strong>₹66,14,000.00</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 5 -->
+  <h2>5. Live Deployment & CRUD Web Verification</h2>
+  <div class="callout-blue">
+    <strong>Web Dashboard URL:</strong> <a class="meta-link" href="https://inventorymanagement-lake.vercel.app">https://inventorymanagement-lake.vercel.app</a><br>
+    The web interface provides full CRUD operations that commit immediately to the cloud Aiven MySQL database:
+    <ul style="margin: 6px 0 0 18px; font-size: 9pt;">
+      <li><strong>Create (POST)</strong>: Add new products, suppliers, and transaction records via intuitive forms.</li>
+      <li><strong>Read (GET)</strong>: Instant table views, real-time metrics cards, and animated horizontal stock charts.</li>
+      <li><strong>Update (PUT / POST)</strong>: Modal-based editing of all records, plus 1-click <code>[-]</code> <code>[+]</code> stock steppers.</li>
+      <li><strong>Delete (DELETE)</strong>: Safe record deletion with double-confirmation dialogs.</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 6 -->
+  <h2>6. Conclusion</h2>
+  <p>
+    The project satisfies 100% of the requirements set out in <strong>Project Statement 2: Inventory Management System</strong>. The solution features standard relational modeling, comprehensive SQL query automation, production cloud hosting on Aiven MySQL, and a publicly accessible web dashboard hosted on Vercel.
+  </p>
+
+</body>
+</html>
